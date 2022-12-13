@@ -114,11 +114,11 @@ namespace GestoreEventi {
             return Data < DateOnly.FromDateTime(DateTime.Now);
         }
 
-        protected bool DataPassata(DateOnly data) {
+        protected static bool DataPassata(DateOnly data) {
             return data < DateOnly.FromDateTime(DateTime.Now);
         }
 
-        protected bool DataPassata(DateTime data) {
+        protected static bool DataPassata(DateTime data) {
             return DateOnly.FromDateTime(data) < DateOnly.FromDateTime(DateTime.Now);
         }
 

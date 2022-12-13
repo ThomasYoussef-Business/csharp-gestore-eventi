@@ -2,3 +2,9 @@
 
 # RCS1036: Remove unnecessary blank line.
 dotnet_diagnostic.RCS1036.severity = none
+
+# RCS1085: Use auto-implemented property.
+dotnet_diagnostic.RCS1085.severity = silent
+
+# IDE0090: Use 'new(...)'
+dotnet_diagnostic.IDE0090.severity = silent

@@ -9,6 +9,7 @@
  *      [x] Chiedere se e quanti posti da disdire
  * 
  * Milestone 3:
+ *      [x] Classe ProgrammaEventi
  * 
  * 
  * Milestone 4:
@@ -20,63 +21,18 @@
 
 using GestoreEventi;
 
+List<Evento> events = new List<Evento>() {
+    new Evento("Variabili",                      new DateOnly(year: 2024, month: 12, day: 15), 200),
+    new Evento("Tipi per value e per reference", new DateOnly(year: 2024, month: 12, day: 16), 200),
+    new Evento("Classi",                         new DateOnly(year: 2024, month: 12, day: 17), 200),
+    new Evento("Metodi nelle classi",            new DateOnly(year: 2024, month: 12, day: 18), 200),
+    new Evento("Encapsulazione degli attributi", new DateOnly(year: 2024, month: 12, day: 19), 200)
+};
 
-Console.WriteLine("Inserisci un titolo per il tuo evento: ");
-string titolo = Console.ReadLine();
+ProgrammaEventi testProgramma = new ProgrammaEventi("Generation C# Testing");
 
-Console.WriteLine("Inserisci una data per il tuo evento:");
-DateOnly dataEvento;
-while (!DateOnly.TryParseExact(Console.ReadLine(), "d/M/yyyy", out dataEvento)) {
-    Console.WriteLine("La data inserita non è una data valida. Riprova: ");
+foreach(Evento evento in events) {
+    testProgramma.AggiungiEvento(evento);
 }
 
-Console.WriteLine("Inserisci la capienza massima per il tuo evento: ");
-int capienzaMassima;
-while (!int.TryParse(Console.ReadLine(), out capienzaMassima)) {
-    Console.WriteLine("La capienza massima inserita non è un numero. Riprova: ");
-}
-
-Evento mioEvento = new Evento(titolo, dataEvento, (uint)capienzaMassima);
-
-
-uint postiDaPrenotare;
-string opzione;
-Console.WriteLine("Vuoi prenotare dei posti?");
-do {
-    opzione = Console.ReadLine();
-} while (opzione != "si" && opzione != "no");
-
-while (opzione == "si") {
-    opzione = string.Empty;
-    Console.WriteLine("Quanti posti desideri prenotare? ");
-    postiDaPrenotare = uint.Parse(Console.ReadLine());
-
-    mioEvento.PrenotaPosti(postiDaPrenotare);
-    Console.WriteLine($"Posti prenotati: {mioEvento.PostiPrenotati}; Posti disponibili: {mioEvento.PostiDisponibili}");
-
-    Console.WriteLine("Vuoi prenotare altri posti?");
-    do {
-        opzione = Console.ReadLine();
-    } while (opzione != "si" && opzione != "no");
-}
-
-
-uint postiDaDisdire;
-Console.WriteLine("Vuoi disdire dei posti?");
-do {
-    opzione = Console.ReadLine();
-} while (opzione != "si" && opzione != "no");
-
-while (opzione == "si") {
-    opzione = string.Empty;
-    Console.WriteLine("Quanti posti desideri disdire? ");
-    postiDaDisdire = uint.Parse(Console.ReadLine());
-
-    mioEvento.DisdiciPosti(postiDaDisdire);
-    Console.WriteLine($"Posti prenotati: {mioEvento.PostiPrenotati}; Posti disponibili: {mioEvento.PostiDisponibili}");
-
-    Console.WriteLine("Vuoi prenotare altri posti?");
-    do {
-        opzione = Console.ReadLine();
-    } while (opzione != "si" && opzione != "no");
-}
+testProgramma.StampaProgramma();
