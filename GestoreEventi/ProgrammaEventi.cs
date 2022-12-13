@@ -29,12 +29,23 @@ namespace GestoreEventi {
         }
         public List<Evento> Eventi => eventi.ConvertAll(eventoDaClonare => new Evento(eventoDaClonare));
 
-        private List<Evento> VeraListaEventi => eventi;
+        private List<Evento> VeraListaEventi {
+            get {
+                return eventi;
+            }
+            init {
+                eventi = value;
+            }
+        }
 
         // COSTRUTTORI
         public ProgrammaEventi(string titolo) {
             Titolo = titolo;
 
+        }
+         public ProgrammaEventi(string titolo, List<Evento> eventi) {
+            Titolo = titolo;
+            VeraListaEventi = eventi;
         }
 
         // METODI PUBBLICI
@@ -71,7 +82,7 @@ namespace GestoreEventi {
         public int NumeroEventi() => VeraListaEventi.Count;
         public void SvuotaEventi() => VeraListaEventi.Clear();
         public override string ToString() {
-            return $"{Titolo}:\n\t" + StringaListaEventi(VeraListaEventi).Replace("\n", "\n\t");
+            return $"{Titolo}\n\t" + StringaListaEventi(VeraListaEventi).Replace("\n", "\n\t");
         }
 
         public void StampaProgramma() {
@@ -80,6 +91,10 @@ namespace GestoreEventi {
 
         public void RiordinaEventi() {
             VeraListaEventi.Sort((left, right) => left.Data.CompareTo(right.Data));
+        }
+
+        public static void RiordinaEventi(List<Evento> eventiDaRiordinare) {
+            eventiDaRiordinare.Sort((left, right) => left.Data.CompareTo(right.Data));
         }
         // METODI PRIVATI
 
