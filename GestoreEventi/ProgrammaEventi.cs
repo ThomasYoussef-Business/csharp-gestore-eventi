@@ -77,6 +77,10 @@ namespace GestoreEventi {
         public void StampaProgramma() {
             Console.WriteLine(this);
         }
+
+        public void RiordinaEventi() {
+            VeraListaEventi.Sort((left, right) => left.Data.CompareTo(right.Data));
+        }
         // METODI PRIVATI
 
     }

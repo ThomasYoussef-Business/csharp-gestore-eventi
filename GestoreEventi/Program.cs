@@ -22,11 +22,11 @@
 using GestoreEventi;
 
 List<Evento> events = new List<Evento>() {
+    new Evento("Classi",                         new DateOnly(year: 2024, month: 12, day: 17), 200),
     new Evento("Variabili",                      new DateOnly(year: 2024, month: 12, day: 15), 200),
     new Evento("Tipi per value e per reference", new DateOnly(year: 2024, month: 12, day: 16), 200),
-    new Evento("Classi",                         new DateOnly(year: 2024, month: 12, day: 17), 200),
+    new Evento("Encapsulazione degli attributi", new DateOnly(year: 2024, month: 12, day: 19), 200),
     new Evento("Metodi nelle classi",            new DateOnly(year: 2024, month: 12, day: 18), 200),
-    new Evento("Encapsulazione degli attributi", new DateOnly(year: 2024, month: 12, day: 19), 200)
 };
 
 ProgrammaEventi testProgramma = new ProgrammaEventi("Generation C# Testing");
@@ -35,4 +35,5 @@ foreach(Evento evento in events) {
     testProgramma.AggiungiEvento(evento);
 }
 
+testProgramma.RiordinaEventi();
 testProgramma.StampaProgramma();
