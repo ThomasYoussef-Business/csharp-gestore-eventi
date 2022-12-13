@@ -33,7 +33,7 @@ namespace GestoreEventi {
         public DateOnly Data {
             get => data;
             set {
-                if (value.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
+                if (DataPassata(value)) {
                     throw new DataPassataException($"Data {nameof(value)} non può essere nel passato.");
                 }
                 data = value;
@@ -76,13 +76,17 @@ namespace GestoreEventi {
             Data = data;
         }
 
+        public Evento(Evento eventoDaCopiare) : this(eventoDaCopiare.Titolo, eventoDaCopiare.Data, eventoDaCopiare.CapienzaMassima) {
+            PostiPrenotati = eventoDaCopiare.PostiPrenotati;
+        }
+
         // METODI PUBBLICI
         public void PrenotaPosti(uint postiDaPrenotare) {
             if (postiDaPrenotare < 1) throw new NotSupportedException("Non puoi prenotare zero o meno posti.");
             if (postiDaPrenotare + PostiPrenotati > CapienzaMassima) {
                 throw new ArgumentOutOfRangeException(nameof(postiDaPrenotare), "Non puoi prenotare più posti di quelli disponibili.");
             }
-            if (Data.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
+            if (DataPassata()) {
                 throw new DataPassataException("Non puoi prenotare posti per un evento già passato.");
             }
 
@@ -94,7 +98,7 @@ namespace GestoreEventi {
             if (postiDaDisdire > PostiPrenotati) {
                 throw new ArgumentOutOfRangeException(nameof(postiDaDisdire), "Non puoi disdire più posti di quelli già prenotati.");
             }
-            if (Data.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
+            if (DataPassata()) {
                 throw new DataPassataException("Non puoi disdire posti per un evento già passato.");
             }
 
@@ -106,6 +110,17 @@ namespace GestoreEventi {
         }
 
         // METODI PRIVATI
+        protected bool DataPassata() {
+            return Data < DateOnly.FromDateTime(DateTime.Now);
+        }
+
+        protected bool DataPassata(DateOnly data) {
+            return data < DateOnly.FromDateTime(DateTime.Now);
+        }
+
+        protected bool DataPassata(DateTime data) {
+            return DateOnly.FromDateTime(data) < DateOnly.FromDateTime(DateTime.Now);
+        }
 
     }
 }
