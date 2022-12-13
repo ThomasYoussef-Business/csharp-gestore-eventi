@@ -6,11 +6,10 @@
  *          [x] Capienza massima - r/
  *          [x] Posti prenotati - r/
  *          [x] Costruttore che prende titolo, data, e capienza massima
- *          [] PrenotaPosti()
- *          [] DisdiciPosti()
- *          [] override ToString
+ *          [x] PrenotaPosti()
+ *          [x] DisdiciPosti()
+ *          [x] override ToString
  */
-
 
 namespace GestoreEventi {
     public class Evento {
@@ -35,7 +34,7 @@ namespace GestoreEventi {
             get => data;
             set {
                 if (value.CompareTo(DateTime.Now) < 0) {
-                    throw new ArgumentOutOfRangeException(nameof(value), $"Data {nameof(value)} non può essere nel passato.");
+                    throw new DataPassataException($"Data {nameof(value)} non può essere nel passato.");
                 }
                 data = value;
             }
@@ -60,16 +59,46 @@ namespace GestoreEventi {
         }
 
         // COSTRUTTORI
-        public Evento(string titolo, DateTime data, uint capienzaMassima) {
+        private Evento(string titolo, uint capienzaMassima) {
             Titolo = titolo;
-            Data = DateOnly.FromDateTime(data);
             CapienzaMassima = capienzaMassima;
             PostiPrenotati = 0;
+
+        }
+        public Evento(string titolo, DateTime data, uint capienzaMassima) : this(titolo, capienzaMassima) {
+            Data = DateOnly.FromDateTime(data);
         }
 
+        public Evento(string titolo, DateOnly data, uint capienzaMassima) : this(titolo, capienzaMassima) {
+            Data = data;
+        }
 
         // METODI PUBBLICI
+        public void PrenotaPosti(uint postiDaPrenotare) {
+            if (Data.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
+                throw new DataPassataException("Non puoi prenotare posti per un evento già passato.");
+            }
+            else if (postiDaPrenotare + PostiPrenotati > CapienzaMassima) {
+                throw new ArgumentOutOfRangeException(nameof(postiDaPrenotare), "Non puoi prenotare più posti di quelli disponibili.");
+            }
 
+            PostiPrenotati += postiDaPrenotare;
+        }
+
+        public void DisdiciPosti(uint postiDaDisdire) {
+            if (Data.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
+                throw new DataPassataException("Non puoi disdire posti per un evento già passato.");
+            }
+            else if (postiDaDisdire > PostiPrenotati) {
+                throw new ArgumentOutOfRangeException(nameof(postiDaDisdire), "Non puoi disdire più posti di quelli già prenotati.");
+            }
+
+            PostiPrenotati -= postiDaDisdire;
+        }
+
+        public override string ToString() {
+            return $"{Data.ToString(CultureInfo.CurrentCulture)} - {Titolo}";
+        }
 
         // METODI PRIVATI
 
