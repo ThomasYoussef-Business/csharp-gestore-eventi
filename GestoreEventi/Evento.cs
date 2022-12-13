@@ -33,7 +33,7 @@ namespace GestoreEventi {
         public DateOnly Data {
             get => data;
             set {
-                if (value.CompareTo(DateTime.Now) < 0) {
+                if (value.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
                     throw new DataPassataException($"Data {nameof(value)} non può essere nel passato.");
                 }
                 data = value;
@@ -57,6 +57,9 @@ namespace GestoreEventi {
                 postiPrenotati = value;
             }
         }
+        public uint PostiDisponibili {
+            get => CapienzaMassima - PostiPrenotati;
+        }
 
         // COSTRUTTORI
         private Evento(string titolo, uint capienzaMassima) {
@@ -75,22 +78,24 @@ namespace GestoreEventi {
 
         // METODI PUBBLICI
         public void PrenotaPosti(uint postiDaPrenotare) {
+            if (postiDaPrenotare < 1) throw new NotSupportedException("Non puoi prenotare zero o meno posti.");
+            if (postiDaPrenotare + PostiPrenotati > CapienzaMassima) {
+                throw new ArgumentOutOfRangeException(nameof(postiDaPrenotare), "Non puoi prenotare più posti di quelli disponibili.");
+            }
             if (Data.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
                 throw new DataPassataException("Non puoi prenotare posti per un evento già passato.");
-            }
-            else if (postiDaPrenotare + PostiPrenotati > CapienzaMassima) {
-                throw new ArgumentOutOfRangeException(nameof(postiDaPrenotare), "Non puoi prenotare più posti di quelli disponibili.");
             }
 
             PostiPrenotati += postiDaPrenotare;
         }
 
         public void DisdiciPosti(uint postiDaDisdire) {
+            if (postiDaDisdire < 1) throw new NotSupportedException("Non puoi disdire zero o meno posti.");
+            if (postiDaDisdire > PostiPrenotati) {
+                throw new ArgumentOutOfRangeException(nameof(postiDaDisdire), "Non puoi disdire più posti di quelli già prenotati.");
+            }
             if (Data.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0) {
                 throw new DataPassataException("Non puoi disdire posti per un evento già passato.");
-            }
-            else if (postiDaDisdire > PostiPrenotati) {
-                throw new ArgumentOutOfRangeException(nameof(postiDaDisdire), "Non puoi disdire più posti di quelli già prenotati.");
             }
 
             PostiPrenotati -= postiDaDisdire;
