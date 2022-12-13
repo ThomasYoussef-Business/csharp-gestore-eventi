@@ -1,6 +1,6 @@
 ﻿/*
  * Milestone 1:
- * 
+ *      [] Classe Evento 
  * 
  * Milestone 2:
  * 
